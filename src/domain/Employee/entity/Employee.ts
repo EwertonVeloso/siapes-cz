@@ -1,10 +1,11 @@
-export type EmployeeRole = 'admin' | 'manager' | 'preceptor'
+export type EmployeeRole = 'ADMIN' | 'MANAGER' | 'PRECEPTOR';
+//import { EmployeeRole } from '@prisma/client';
 
 export type Employee = {
     id: string
     professional_registration: string
     active: boolean
-    role: string
+    role: EmployeeRole,
     name: string
     email: string
     password: string
