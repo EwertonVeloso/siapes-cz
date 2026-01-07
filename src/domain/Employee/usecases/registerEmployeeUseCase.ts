@@ -1,41 +1,36 @@
-import { PrismaClient, Prisma } from '@prisma/client';
-import type { CreateEmployeeDTO } from '../../../schemas/EmployeeSchema.ts';
+import { hash } from "bcryptjs";
+import EmployeeRepository from "../../../databases/prismaRepository/EmployeeRepository.ts";
+import { AppError } from "../../../errors/appErrors.ts";
+import type { CreateEmployeeDTO } from "../../../schemas/EmployeeSchema.ts";
 
-export class RegisterEmployeeUseCase {
-    async execute(data: CreateEmployeeDTO) {
-        const prisma = new PrismaClient();
-
-        try {
-            const created = await prisma.employee.create({
-                data: {
-                    professional_registration: data.professional_registration,
-                    active: data.active ?? true,
-                    // default role when not provided
-                    role: 'PRECEPTOR',
-                    name: data.name,
-                    email: data.email,
-                    password: data.password,
-                    phone: data.phone ?? '',
-                },
-            });
-
-            // do not expose password in the response
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { password, ...safe } = created as any;
-
-            return safe;
-        } catch (err: unknown) {
-            // handle unique constraint errors (email or professional_registration)
-            if (
-                err instanceof Prisma.PrismaClientKnownRequestError &&
-                (err as any).code === 'P2002'
-            ) {
-                throw new Error('Employee with same email or professional_registration already exists');
-            }
-
-            throw err;
-        } finally {
-            await prisma.$disconnect();
-        }
+class RegisterEmployeeUseCase {
+  
+  async execute(data: CreateEmployeeDTO) {
+    
+    const emailAlreadyExists = await EmployeeRepository.findByEmail(data.email);
+    if (emailAlreadyExists) {
+      throw new AppError("E-mail já cadastrado.", 400); 
     }
+
+    const cpfAlreadyExists = await EmployeeRepository.findByCpf(data.cpf);
+    if (cpfAlreadyExists) {
+      throw new AppError("CPF já cadastrado.", 400);
+    }
+
+    const passwordHash = await hash(data.password, 8);
+
+    const userCreated = await EmployeeRepository.create({
+      ...data,
+      password: passwordHash,
+    });
+
+    const { password, ...userSafeData } = userCreated;
+
+    return { 
+        status: 201, 
+        body: userSafeData 
+    };
+  }
 }
+
+export default new RegisterEmployeeUseCase();
