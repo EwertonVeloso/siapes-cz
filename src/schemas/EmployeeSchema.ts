@@ -1,17 +1,11 @@
 import { z } from "zod";
 
-const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$|^\d{11}$/;
-
 const ROLES = ["ADMIN", "MANAGER", "PRECEPTOR"] as const;
 
 export const CreateEmployeeSchema = z.object({
     professional_registration: z
     .string("Matrícula profissional é obrigatória" )
     .min(5, "Matrícula profissional deve ter no mínimo 5 caracteres"),
-
-    cpf: z
-    .string("CPF é obrigatório" )
-    .regex(cpfRegex, "CPF formato inválido. Use aaa.aaa.aaa-aa ou apenas números"),
 
     name: z
     .string("Nome é obrigatório" )

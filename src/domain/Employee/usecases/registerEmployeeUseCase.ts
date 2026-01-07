@@ -1,5 +1,5 @@
 import { hash } from "bcryptjs";
-import EmployeeRepository from "../../../databases/prismaRepository/EmployeeRepository.ts";
+import EmployeeRepository from "../../../databases/prismaRepository/employeeRepository.ts";
 import { AppError } from "../../../errors/appErrors.ts";
 import type { CreateEmployeeDTO } from "../../../schemas/EmployeeSchema.ts";
 
@@ -12,10 +12,10 @@ class RegisterEmployeeUseCase {
       throw new AppError("E-mail já cadastrado.", 400); 
     }
 
-    const cpfAlreadyExists = await EmployeeRepository.findByCpf(data.cpf);
-    if (cpfAlreadyExists) {
-      throw new AppError("CPF já cadastrado.", 400);
-    }
+    // const cpfAlreadyExists = await EmployeeRepository.fin(data.cpf);
+    // if (cpfAlreadyExists) {
+    //   throw new AppError("CPF já cadastrado.", 400);
+    // }
 
     const passwordHash = await hash(data.password, 8);
 
