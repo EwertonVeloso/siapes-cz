@@ -1,12 +1,15 @@
 import express from 'express';
 import employeeRoutes from './routes/employeeRoutes.ts';
 import { globalErrorHandler } from './middlewares/globalErrorHandler.ts';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const server = express();
 const PORT = process.env.PORT || 3000;
 
 server.use(express.json());
-server.use('/employees', employeeRoutes);
+server.use('/employee', employeeRoutes);
 
 server.use(globalErrorHandler);
 

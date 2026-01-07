@@ -9,13 +9,13 @@ class RegisterEmployeeUseCase {
     
     const emailAlreadyExists = await EmployeeRepository.findByEmail(data.email);
     if (emailAlreadyExists) {
-      throw new AppError("E-mail já cadastrado.", 400); 
+      throw new AppError("E-mail já cadastrado.", 409); 
     }
 
-    // const cpfAlreadyExists = await EmployeeRepository.fin(data.cpf);
-    // if (cpfAlreadyExists) {
-    //   throw new AppError("CPF já cadastrado.", 400);
-    // }
+    const prAlreadyExists = await EmployeeRepository.findByPR(data.professional_registration);
+    if (prAlreadyExists) {
+      throw new AppError("Registro profissional já cadastrado.", 409);
+    }
 
     const passwordHash = await hash(data.password, 8);
 
