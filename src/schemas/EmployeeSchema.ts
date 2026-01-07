@@ -2,6 +2,8 @@ import { z } from "zod";
 
 const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$|^\d{11}$/;
 
+const ROLES = ["ADMIN", "MANAGER", "PRECEPTOR"] as const;
+
 export const CreateEmployeeSchema = z.object({
     professional_registration: z
     .string("Matrícula profissional é obrigatória" )
@@ -14,11 +16,15 @@ export const CreateEmployeeSchema = z.object({
     name: z
     .string("Nome é obrigatório" )
     .trim()
-    .min(3, "Nome deve ter pelo menos 3 caracteres"),
+    .min(2, "Nome deve ter pelo menos 2 caracteres"),
 
     email: z
     .string("E-mail é obrigatório" )
     .email("E-mail inválido"),
+
+    role: z
+    .enum(ROLES)
+    .default("PRECEPTOR"),
 
     password: z.coerce
     .string("Senha é obrigatória" )

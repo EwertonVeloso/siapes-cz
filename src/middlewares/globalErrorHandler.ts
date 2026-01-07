@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { AppErrorsZod } from "../errors/errorsZod.ts" 
+import { AppErrorsZod } from "../errors/zodErrors.ts" 
 
 export function globalErrorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
   

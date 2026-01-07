@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 
 server.use(express.json());
 server.use('/employees', employeeRoutes);
+
 server.use(globalErrorHandler);
 
 server.listen(PORT, () => {
