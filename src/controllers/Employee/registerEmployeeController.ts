@@ -1,31 +1,24 @@
 import type { Request, Response } from 'express';
-// import { RegisterEmployeeUseCase } from '../../use-cases/registerEmployeeUseCase';
+import { RegisterEmployeeUseCase } from "../../domain/Employee/usecases/registerEmployeeUseCase.ts"
 import type { CreateEmployeeDTO } from '../../schemas/EmployeeSchema.ts';
 import { validateZodEmployee } from '../../service/zodvalidations.ts';
+import { AppErrorsZod } from '../../errors/errorsZod.ts'; 
 
-export class RegisterEmployeeController {
+class RegisterEmployeeController {
     async handle(req: Request, res: Response): Promise<Response> {
-        try {
-            const employeeData: CreateEmployeeDTO = req.body;
+        const employeeData: CreateEmployeeDTO = req.body;
 
-            const validationErrors = validateZodEmployee(employeeData); 
+        const validationErrors = validateZodEmployee(employeeData); 
 
-            if (validationErrors) {
-                return res.status(400).json({ 
-                    message: "Erro nos dados enviados",
-                    errors: validationErrors.fieldErrors 
-                });
-            }
-
-            const registerEmployeeUseCase = new RegisterEmployeeUseCase();
-            const result = await registerEmployeeUseCase.execute(employeeData);
-
-            return res.status(201).json(result);
-
-        } catch (error: any) {
-            return res.status(400).json({ 
-                error: error.message || "Erro inesperado." 
-            });
+        if (validationErrors) {
+            throw new AppErrorsZod(validationErrors.fieldErrors);
         }
+
+        const registerEmployeeUseCase = new RegisterEmployeeUseCase();
+        const result = await registerEmployeeUseCase.execute(employeeData);
+
+        return res.status(201).json(result);
     }
 }
+
+export default new RegisterEmployeeController();
