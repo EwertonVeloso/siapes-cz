@@ -1,6 +1,7 @@
 import { prismaService, PrismaClient } from "../../service/prisma.ts"
 import type { Employee } from "../../domain/Employee/entity/Employee.ts";
 import type { CreateEmployeeDTO } from "../../schemas/EmployeeSchema.ts";
+import type { UpdateEmployeeDTO } from "../../schemas/EmployeeSchema.ts";
 
 
 class EmployeeRepository {
@@ -13,6 +14,13 @@ class EmployeeRepository {
   async findByEmail(email: string) : Promise<Employee | null>{
     const employee = await this.prisma.employee.findUnique({
       where: { email },
+    });
+    return employee;
+  }
+
+  async findById(id: string): Promise<Employee | null> {
+    const employee = await this.prisma.employee.findUnique({
+      where: { id },
     });
     return employee;
   }
@@ -39,6 +47,14 @@ class EmployeeRepository {
     });
 
     return employee;
+  }
+
+  async update(id: string, data: UpdateEmployeeDTO): Promise<Employee> {
+    const updatedEmployee = await this.prisma.employee.update({
+      where: { id },
+      data: data as any,
+    });
+    return updatedEmployee;
   }
 }
 

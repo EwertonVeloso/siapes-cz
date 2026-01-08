@@ -15,10 +15,10 @@ export function validateZodCreateEmployee(data: unknown) {
 export function validateZodUpdateEmployee(data: unknown) {
   const result = UpdateEmployeeSchema.safeParse(data);
 
-  if (!result.success) {
-    // Retorna os erros formatados
-    return { success: false, errors: result.error.flatten().fieldErrors };
+  if (result.success) {
+    return; 
   }
-
-  return { success: true, data: result.data };
+  const { fieldErrors } = result.error.flatten();
+  
+  return { fieldErrors };
 }
