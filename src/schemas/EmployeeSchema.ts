@@ -34,3 +34,13 @@ export const CreateEmployeeSchema = z.object({
 });
 
 export type CreateEmployeeDTO = z.infer<typeof CreateEmployeeSchema>;
+
+export const UpdateEmployeeSchema = CreateEmployeeSchema
+  .omit({ 
+    password: true, 
+    role: true,    
+    active: true,   
+  })
+  .partial();
+
+export type UpdateEmployeeDTO = z.infer<typeof UpdateEmployeeSchema>;
