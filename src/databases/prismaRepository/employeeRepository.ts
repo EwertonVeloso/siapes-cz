@@ -52,7 +52,12 @@ class EmployeeRepository {
   async update(id: string, data: UpdateEmployeeDTO): Promise<Employee> {
     const updatedEmployee = await this.prisma.employee.update({
       where: { id },
-      data: data as any,
+      data: {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        professional_registration: data.professional_registration,
+      }
     });
     return updatedEmployee;
   }

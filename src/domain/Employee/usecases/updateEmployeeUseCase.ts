@@ -26,9 +26,11 @@ class UpdateEmployeeUseCase {
         
         const updatedEmployee = await EmployeeRepository.update(employeeId, data);
 
+        const { password, ...safeUpdatedEmployee } = updatedEmployee;
+
         return { 
             status: 200, 
-            body: updatedEmployee 
+            body: safeUpdatedEmployee 
         };
     }
 }

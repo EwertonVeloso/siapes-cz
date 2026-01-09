@@ -36,10 +36,11 @@ export const CreateEmployeeSchema = z.object({
 export type CreateEmployeeDTO = z.infer<typeof CreateEmployeeSchema>;
 
 export const UpdateEmployeeSchema = CreateEmployeeSchema
-  .omit({ 
-    password: true, 
-    role: true,    
-    active: true,   
+  .pick({ 
+    name: true, 
+    email: true,
+    phone: true,
+    professional_registration: true
   })
   .partial();
 

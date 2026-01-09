@@ -6,15 +6,13 @@ import { AppErrorsZod } from '../../errors/zodErrors.ts';
 
 class RegisterEmployeeController {
     async handle(req: Request, res: Response): Promise<Response> {
-        const validationErrors = validateZodCreateEmployee(req.body); 
+        const validation = validateZodCreateEmployee(req.body); 
 
-        if (validationErrors) {
-            throw new AppErrorsZod(validationErrors.fieldErrors);
+        if (!validation.success) {
+            throw new AppErrorsZod(validation.fieldErrors);
         }
 
-        const employeeData = req.body as CreateEmployeeDTO;
-
-        const result = await RegisterEmployeeUseCase.execute(employeeData);
+        const result = await RegisterEmployeeUseCase.execute(validation.data);
 
         return res.status(result.status).json(result.body);
     }
