@@ -70,6 +70,12 @@ class EmployeeRepository {
     });
     return updatedEmployee;
   }
+
+  async delete(id: string): Promise<void> {
+    await this.prisma.employee.delete({
+      where: { id },
+    });
+  }
 }
 
 export default new EmployeeRepository(prismaService);
