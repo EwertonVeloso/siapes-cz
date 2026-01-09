@@ -33,6 +33,15 @@ class EmployeeRepository {
     return employee;
   }
 
+  async findAll(): Promise<Omit<Employee, "password">[]>{
+    const employees = await this.prisma.employee.findMany();
+
+    return employees.map((employee) => {
+            const { password, ...safeEmployeeData } = employee;
+            return safeEmployeeData;
+        });
+  }
+
   async create(data: CreateEmployeeDTO): Promise<Employee> {
     const employee = await this.prisma.employee.create({
       data: {

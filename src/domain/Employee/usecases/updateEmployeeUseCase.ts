@@ -1,6 +1,5 @@
 import { AppError } from "../../../errors/appErrors.ts";
 import EmployeeRepository from "../../../databases/prismaRepository/employeeRepository.ts";
-import type {Employee} from "../../../domain/Employee/entity/Employee.ts";
 import type { UpdateEmployeeDTO } from "../../../schemas/EmployeeSchema.ts";
 
 class UpdateEmployeeUseCase {
