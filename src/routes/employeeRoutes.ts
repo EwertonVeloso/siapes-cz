@@ -3,6 +3,7 @@ import  RegisterEmployeeController  from "../controllers/Employee/registerEmploy
 import UpdateEmployeeController  from "../controllers/Employee/updateEmployeeController.ts";
 import GetAllEmployeesController  from "../controllers/Employee/getAllEmployeeController.ts";
 import DeleteEmployeeController  from "../controllers/Employee/deleteEmployeeController.ts";
+import GetEmployeeByIdController from "../controllers/Employee/getEmployeeByIdController.ts";
 
 const employeeRoutes = express.Router();
 
@@ -10,8 +11,7 @@ employeeRoutes.post("/", RegisterEmployeeController.handle);
 employeeRoutes.put("/:id", UpdateEmployeeController.handle);
 employeeRoutes.get("/", GetAllEmployeesController.handle);
 employeeRoutes.delete("/:id", DeleteEmployeeController.handle);
-
-// employeeRoutes.get("/:id", GetEmployeeByIdController.handle);
+employeeRoutes.get("/:id", GetEmployeeByIdController.handle);
 // employeeRoutes.patch("/:id/status", StatusEmployeeController.handle);
 // employeeRoutes.patch("/id/role", RoleEmployeeController.handle);
 

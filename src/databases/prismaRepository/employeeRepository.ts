@@ -18,11 +18,18 @@ class EmployeeRepository {
     return employee;
   }
 
-  async findById(id: string): Promise<Employee | null> {
+  async findById(id: string): Promise<Omit<Employee, "password"> | null> {
     const employee = await this.prisma.employee.findUnique({
       where: { id },
     });
-    return employee;
+
+    if (!employee) {
+        return null;
+    }
+  
+    const { password, ...safeEmployeeData } = employee;
+    return safeEmployeeData;
+        
   }
 
   //findByProfessional_registration
