@@ -2,6 +2,7 @@ import express from 'express';
 import employeeRoutes from './routes/employeeRoutes.ts';
 import { globalErrorHandler } from './middlewares/globalErrorHandler.ts';
 import authRoutes from './routes/authRoutes.ts';
+import profileRoutes from './routes/profileRoutes.ts';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 server.use(express.json());
 server.use('/auth', authRoutes);
 server.use('/employee', employeeRoutes);
+server.use('/profile', profileRoutes);
 
 server.use(globalErrorHandler);
 

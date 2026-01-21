@@ -4,12 +4,15 @@ import UpdateEmployeeController  from "../controllers/Employee/updateEmployeeCon
 import GetAllEmployeesController  from "../controllers/Employee/getAllEmployeeController.ts";
 import DeleteEmployeeController  from "../controllers/Employee/deleteEmployeeController.ts";
 import GetEmployeeByIdController from "../controllers/Employee/getEmployeeByIdController.ts";
+import { verifyToken } from "../middlewares/verifyToken.ts";
+
 
 const employeeRoutes = express.Router();
+//employeeRoutes.use(verifyToken)
 
 employeeRoutes.post("/", RegisterEmployeeController.handle);
 employeeRoutes.put("/:id", UpdateEmployeeController.handle);
-employeeRoutes.get("/", GetAllEmployeesController.handle);
+employeeRoutes.get("/", verifyToken, GetAllEmployeesController.handle);
 employeeRoutes.delete("/:id", DeleteEmployeeController.handle);
 employeeRoutes.get("/:id", GetEmployeeByIdController.handle);
 // employeeRoutes.patch("/:id/status", StatusEmployeeController.handle);

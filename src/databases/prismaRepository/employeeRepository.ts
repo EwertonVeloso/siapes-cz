@@ -32,6 +32,12 @@ class EmployeeRepository {
         
   }
 
+  async findByIdWithPassword(id: string) {
+    return this.prisma.employee.findUnique({
+      where: { id },
+    });
+  }
+
   //findByProfessional_registration
   async findByPR(professional_registration: string): Promise<Employee | null> {
     const employee = await this.prisma.employee.findUnique({
@@ -76,6 +82,15 @@ class EmployeeRepository {
       }
     });
     return updatedEmployee;
+  }
+
+  async updatePassword(id: string, passwordHash: string): Promise<void> {
+    await this.prisma.employee.update({
+      where: { id },
+      data: {
+        password: passwordHash,  
+      },
+    });
   }
 
   async delete(id: string): Promise<void> {
