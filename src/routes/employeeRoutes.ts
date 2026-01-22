@@ -4,6 +4,8 @@ import UpdateEmployeeController  from "../controllers/Employee/updateEmployeeCon
 import GetAllEmployeesController  from "../controllers/Employee/getAllEmployeeController.ts";
 import DeleteEmployeeController  from "../controllers/Employee/deleteEmployeeController.ts";
 import GetEmployeeByIdController from "../controllers/Employee/getEmployeeByIdController.ts";
+import UpdateEmployeeStatusController from "../controllers/Employee/updateEmployeeStatusController.ts";
+import RoleEmployeeController from "../controllers/Employee/updateEmployeeRoleController.ts";
 import { verifyToken } from "../middlewares/verifyToken.ts";
 
 
@@ -15,8 +17,8 @@ employeeRoutes.put("/:id", UpdateEmployeeController.handle);
 employeeRoutes.get("/", GetAllEmployeesController.handle);
 employeeRoutes.delete("/:id", DeleteEmployeeController.handle);
 employeeRoutes.get("/:id", GetEmployeeByIdController.handle);
-// employeeRoutes.patch("/:id/status", StatusEmployeeController.handle);
-// employeeRoutes.patch("/id/role", RoleEmployeeController.handle);
+employeeRoutes.patch("/:id/status", UpdateEmployeeStatusController.handle);
+employeeRoutes.patch("/:id/role", RoleEmployeeController.handle);
 
 
 export default employeeRoutes;

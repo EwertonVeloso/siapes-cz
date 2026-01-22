@@ -102,6 +102,15 @@ class EmployeeRepository {
     });
   }
 
+  async updateRole(id: string, role: Employee['role']): Promise<void> {
+    await this.prisma.employee.update({
+      where: { id },
+      data: {
+        role: role, 
+      },
+    });
+  }
+
   async delete(id: string): Promise<void> {
     await this.prisma.employee.delete({
       where: { id },

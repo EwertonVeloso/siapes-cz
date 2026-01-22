@@ -15,6 +15,7 @@ interface IAuthUser {
   email: string;
   password: string;
   role: string;
+  active: boolean;
 }
 
 class AuthenticateUseCase {
@@ -29,9 +30,14 @@ class AuthenticateUseCase {
         name: employee.name,
         email: employee.email,
         password: employee.password,
-        role: employee.role 
+        role: employee.role,
+        active: employee.active
       };
     } 
+
+    if (employee && !employee.active) { 
+      throw new AppError("Acesso negado. Usuário inativo.", 401);
+    }
     
     if (!authUser) {
       throw new AppError("Email ou senha incorretos", 401);

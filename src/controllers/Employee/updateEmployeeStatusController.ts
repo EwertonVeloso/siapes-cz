@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import UpdateEmployeeStatusUseCase from "../../domain/Employee/usecases/updateemployeeStatusUseCase.ts";
+import UpdateEmployeeStatusUseCase from "../../domain/Employee/usecases/updateEmployeeStatusUseCase.ts";
 import { AppError } from "../../errors/appErrors.ts";
 
 class UpdateEmployeeStatusController {
