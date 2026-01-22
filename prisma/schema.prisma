@@ -34,4 +34,30 @@ enum EmployeeRole {
   PRECEPTOR
 }
 
+model Request {
+  id                String       @id @default(uuid())
+  protocol          String       @unique
+  hash_protocol     String?
+  title             String
+  description       String
+  status            RequestStatus @default(PENDING)
+  course            String
+  students_number   Int
+  createdAt         DateTime  @default(now())
+  archives          Archive[]
+}
+
+model Archive {
+  id             String        @id @default(uuid())
+  name           String
+  url            String
+  request_id     String
+  request        Request @relation(fields: [request_id], references: [id], onDelete: Cascade)
+}
+
+enum RequestStatus {
+  ACCEPTED
+  PENDING
+  REFUSED
+}
 
