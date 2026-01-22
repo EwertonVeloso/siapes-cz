@@ -93,6 +93,15 @@ class EmployeeRepository {
     });
   }
 
+  async updateStatus(id: string, isActive: boolean): Promise<void> {
+    await this.prisma.employee.update({
+      where: { id },
+      data: {
+        active: isActive, 
+      },
+    });
+  }
+
   async delete(id: string): Promise<void> {
     await this.prisma.employee.delete({
       where: { id },

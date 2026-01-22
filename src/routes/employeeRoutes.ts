@@ -8,11 +8,11 @@ import { verifyToken } from "../middlewares/verifyToken.ts";
 
 
 const employeeRoutes = express.Router();
-//employeeRoutes.use(verifyToken)
+employeeRoutes.use(verifyToken)
 
 employeeRoutes.post("/", RegisterEmployeeController.handle);
 employeeRoutes.put("/:id", UpdateEmployeeController.handle);
-employeeRoutes.get("/", verifyToken, GetAllEmployeesController.handle);
+employeeRoutes.get("/", GetAllEmployeesController.handle);
 employeeRoutes.delete("/:id", DeleteEmployeeController.handle);
 employeeRoutes.get("/:id", GetEmployeeByIdController.handle);
 // employeeRoutes.patch("/:id/status", StatusEmployeeController.handle);
