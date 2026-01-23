@@ -1,9 +1,12 @@
 import type { Request, Response } from 'express';
 import getAllRequestUseCase from '../../domain/Request/usecases/getAllRequestUseCase.ts';
 
-export const getAllRequestController = async (req: Request, res: Response) => {
- 
-  const { status, body } = await getAllRequestUseCase.execute();
+class GetAllRequestController {
+  async handle(req: Request, res: Response): Promise<Response> {
+    const { status, body } = await getAllRequestUseCase.execute();
 
-  return res.status(status).json(body);
-};
+    return res.status(status).json(body);
+  }
+}
+
+export default new GetAllRequestController();
