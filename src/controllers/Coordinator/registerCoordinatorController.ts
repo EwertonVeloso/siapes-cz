@@ -1,22 +1,22 @@
 import type { Request, Response } from 'express';
-import GetCoordinatorByIdUseCase from "../../domain/Coordinator/usecases/getCoordinatorByIdUseCase.ts";
-import { AppError } from "../../errors/appErrors.ts";
+import RegisterCoordinatorUseCase from "../../domain/Coordinator/usecases/registerCoordinatorUseCase.ts";
+import type { CreateCoordinatorDTO } from '../../schemas/CoordinatorSchema.ts';
+import { validateZodCreateCoordinator } from '../../service/zodvalidations.ts';
+import { AppErrorsZod } from '../../errors/zodErrors.ts';
 
-class GetCoordinatorByIdController {
+class RegisterCoordinatorController {
   async handle(req: Request, res: Response): Promise<Response> {
-    const id = req.params.id as string;
+    const validation = validateZodCreateCoordinator(req.body);
 
-    const uuidRegex =
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
-    if (!uuidRegex.test(id)) {
-      throw new AppError("ID inválido.", 400);
+    if (validation.success===false) {
+      throw new AppErrorsZod(validation.fieldErrors);
     }
 
-    const result = await GetCoordinatorByIdUseCase.execute(id);
+    const result = await RegisterCoordinatorUseCase.execute(
+      validation.data);
 
     return res.status(result.status).json(result.body);
   }
 }
 
-export default new GetCoordinatorByIdController();
+export default new RegisterCoordinatorController();
