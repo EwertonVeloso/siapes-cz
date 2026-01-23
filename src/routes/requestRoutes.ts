@@ -1,24 +1,24 @@
 import { Router } from 'express';
-import { registerRequestController } from '../controllers/Request/registerRequestController.ts';
-import { getAllRequestController } from '../controllers/Request/getAllRequestController.ts';
-import { getRequestByIdController } from '../controllers/Request/getRequestByIdController.ts';
-import { updateRequestController } from '../controllers/Request/updateRequestController.ts';
-import { deleteRequestController } from '../controllers/Request/deleteRequestController.ts';
+import RegisterRequestController from '../controllers/Request/registerRequestController.ts';
+import GetAllRequestController from '../controllers/Request/getAllRequestController.ts';
+import GetRequestByIdController from '../controllers/Request/getRequestByIdController.ts';
+import UpdateRequestController  from '../controllers/Request/updateRequestController.ts';
+import DeleteRequestController  from '../controllers/Request/deleteRequestController.ts';
 import multer from 'multer';
 import { multerConfig } from '../config/multer.ts';
-import { uploadArchiveController } from '../controllers/Request/uploadArchiveController.ts';
-import {updateStatusRequestController} from '../controllers/Request/updateStatusRequestController.ts';
+import UploadArchiveController from '../controllers/Request/uploadArchiveController.ts';
+import UpdateStatusRequestController from '../controllers/Request/updateStatusRequestController.ts';
 
 const requestRoutes = Router();
 const upload = multer(multerConfig);
 
-requestRoutes.post('/', registerRequestController);
-requestRoutes.get('/', getAllRequestController);
-requestRoutes.get('/:id', getRequestByIdController);
-requestRoutes.put('/:id', updateRequestController);
-requestRoutes.delete('/:id', deleteRequestController);
-requestRoutes.post('/:id/archive', upload.single('file'), uploadArchiveController);
-requestRoutes.patch('/:id/status', updateStatusRequestController);
+requestRoutes.post('/', RegisterRequestController.handle);
+requestRoutes.get('/', GetAllRequestController.handle);
+requestRoutes.get('/:id', GetRequestByIdController.handle);
+requestRoutes.put('/:id', UpdateRequestController.handle);
+requestRoutes.delete('/:id', DeleteRequestController.handle);
+requestRoutes.post('/:id/archive', upload.single('file'), UploadArchiveController.handle);
+requestRoutes.patch('/:id/status', UpdateStatusRequestController.handle);
 
 
 export { requestRoutes };

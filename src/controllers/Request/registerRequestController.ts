@@ -1,17 +1,22 @@
 import type { Request, Response } from 'express';
 import registerRequestUseCase from '../../domain/Request/usecases/registerRequestUseCase.ts';
+import type { CreateRequestDTO } from '../../schemas/RequestSchema.ts';
 import { createRequestSchema } from '../../schemas/RequestSchema.ts';
-import { AppError } from '../../errors/appErrors.ts';
+import { AppErrorsZod } from '../../errors/zodErrors.ts';
 
-export const registerRequestController = async (req: Request, res: Response) => {
+class RegisterRequestController {
+    async handle(req: Request, res: Response): Promise<Response> {
+        const validation = createRequestSchema.safeParse(req.body);
 
-  const validatedData = createRequestSchema.parse(req.body);
+        if (!validation.success) {
+            const fieldErrors = validation.error.flatten().fieldErrors;
+            throw new AppErrorsZod(fieldErrors);
+        }
 
-  if(!validatedData){
-    throw new AppError('Invalid request data', 400);
-  }
+        const result = await registerRequestUseCase.execute(validation.data);
 
-  const { status, body } = await registerRequestUseCase.execute(validatedData);
+        return res.status(result.status).json(result.body);
+    }
+}
 
-  return res.status(status).json(body);
-};
+export default new RegisterRequestController();
