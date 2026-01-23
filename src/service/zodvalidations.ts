@@ -26,3 +26,41 @@ export function validateZodUpdateEmployee(data: unknown): ValidationResult<Updat
 
   return { success: true, data: result.data }; 
 }
+
+import type {
+  CreateCoordinatorDTO,
+  UpdateCoordinatorDTO,
+} from "../schemas/CoordinatorSchema.ts";
+import {
+  CreateCoordinatorSchema,
+  UpdateCoordinatorSchema,
+} from "../schemas/CoordinatorSchema.ts";
+
+export function validateZodCreateCoordinator(
+  data: unknown
+): ValidationResult<CreateCoordinatorDTO> {
+  const result = CreateCoordinatorSchema.safeParse(data);
+
+  if (result.success) {
+    return { success: true, data: result.data };
+  }
+
+  const { fieldErrors } = result.error.flatten();
+
+  return { success: false, fieldErrors };
+}
+
+export function validateZodUpdateCoordinator(
+  data: unknown
+): ValidationResult<UpdateCoordinatorDTO> {
+  const result = UpdateCoordinatorSchema.safeParse(data);
+
+  if (!result.success) {
+    return {
+      success: false,
+      fieldErrors: result.error.flatten().fieldErrors,
+    };
+  }
+
+  return { success: true, data: result.data };
+}
