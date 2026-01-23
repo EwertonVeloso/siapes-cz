@@ -34,4 +34,19 @@ enum EmployeeRole {
   PRECEPTOR
 }
 
+model Coordinator {
+  id                        String @id @default(uuid())
+  registration              String @unique
+  role                      CoordinatorRole @default(COORDINATOR)
+  name                      String
+  email                     String @unique
+  password                  String
+  created_at                DateTime @default(now())
+  updated_at                DateTime @updatedAt
 
+  @@map("coordinators")
+}
+
+enum CoordinatorRole {
+  COORDINATOR
+}
