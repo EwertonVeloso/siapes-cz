@@ -1,5 +1,7 @@
+import path from 'path';
 import express from 'express';
 import employeeRoutes from './routes/employeeRoutes.ts';
+import { requestRoutes } from './routes/requestRoutes.ts';
 import { globalErrorHandler } from './middlewares/globalErrorHandler.ts';
 import authRoutes from './routes/authRoutes.ts';
 import profileRoutes from './routes/profileRoutes.ts';
@@ -16,7 +18,8 @@ server.use('/auth', authRoutes);
 server.use('/coordinator', coordinatorRoutes);
 server.use('/employee', employeeRoutes);
 server.use('/profile', profileRoutes);
-
+server.use('/request', requestRoutes);
+server.use('/files', express.static(path.resolve('src','uploads')));
 server.use(globalErrorHandler);
 
 server.listen(PORT, () => {
