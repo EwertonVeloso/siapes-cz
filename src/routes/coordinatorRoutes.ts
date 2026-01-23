@@ -4,8 +4,10 @@ import UpdateCoordinatorController  from "../controllers/Coordinator/updateCoord
 import GetAllCoordinatorController  from "../controllers/Coordinator/getAllCoordinatorController.ts";
 import DeleteCoordinatorController  from "../controllers/Coordinator/deleteCoordinatorController.ts";
 import GetCoordinatorByIdController from "../controllers/Coordinator/getCoordinatorByIdController.ts";
+import { verifyToken } from "../middlewares/verifyToken.ts";
 
 const coordinatorRoutes = express.Router();
+coordinatorRoutes.use(verifyToken)
 
 coordinatorRoutes.post("/", RegisterCoordinatorController.handle);
 coordinatorRoutes.get("/", GetAllCoordinatorController.handle);
