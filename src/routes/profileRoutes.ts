@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { verifyToken } from "../middlewares/verifyToken.ts";
-import ChangePasswordController from "../controllers/Employee/changePasswordController.ts"
+import ChangePasswordController from "../controllers/authentication/changePasswordController.ts"
 
 const profileRoutes = Router();
 

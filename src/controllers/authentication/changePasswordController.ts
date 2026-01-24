@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import ChangePasswordUseCase from "../../domain/Employee/usecases/changePasswordUseCase.ts";
+import ChangePasswordUseCase from "../../domain/authenticate/usecases/changePasswordUseCase.ts";
 
 class ChangePasswordController {
   async handle(req: Request, res: Response) {
