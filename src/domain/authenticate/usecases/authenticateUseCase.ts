@@ -1,8 +1,11 @@
 import jwt from "jsonwebtoken";
 import { compare } from "bcryptjs";
-import { AppError } from "../../../errors/appErrors.ts"
+import dayjs from "dayjs";
+import { AppError } from "../../../errors/appErrors.ts";
 
 import employeeRepository from "../../../databases/prismaRepository/employeeRepository.ts";
+import coordinatorRepository from "../../../databases/prismaRepository/coordinatorRepository.ts"; 
+import refreshTokenRepository from "../../../databases/prismaRepository/refreshTokenRepository.ts";
 
 type ParamsBody = {
   email: string;
@@ -16,6 +19,7 @@ interface IAuthUser {
   password: string;
   role: string;
   active: boolean;
+  type: "EMPLOYEE" | "COORDINATOR"; 
 }
 
 class AuthenticateUseCase {
@@ -23,45 +27,58 @@ class AuthenticateUseCase {
     let authUser: IAuthUser | null = null;
 
     const employee = await employeeRepository.findByEmail(email);
-
     if (employee) {
       authUser = {
-        id: employee.id,
-        name: employee.name,
-        email: employee.email,
-        password: employee.password,
-        role: employee.role,
-        active: employee.active
+        ...employee,
+        type: "EMPLOYEE"
       };
-    } 
-
-    if (employee && !employee.active) { 
-      throw new AppError("Acesso negado. Usuário inativo.", 401);
     }
-    
+
+    if (!authUser) {
+      const coordinator = await coordinatorRepository.findByEmail(email);
+      if (coordinator) {
+         authUser = { ...coordinator, role: "COORDINATOR", type: "COORDINATOR", active: true }; 
+      }
+    }
+
     if (!authUser) {
       throw new AppError("Email ou senha incorretos", 401);
     }
 
     const passwordMatch = await compare(password, authUser.password);
-
     if (!passwordMatch) {
       throw new AppError("Email ou senha incorretos", 401);
     }
+
+    if (!authUser.active) {
+      throw new AppError("Acesso negado. Usuário inativo.", 401);
+    }
+
+    
+    await refreshTokenRepository.deleteByUserId(authUser.id);
 
     const token = jwt.sign(
       { role: authUser.role }, 
       process.env.TOKEN_KEY!, 
       {
         subject: authUser.id,
-        expiresIn: "1d",
+        expiresIn: "15m", 
       }
     );
+
+    const refreshTokenExpiresIn = dayjs().add(7, "days").unix();
+    
+    const refreshToken = await refreshTokenRepository.create({
+      userId: authUser.id,
+      userType: authUser.type, 
+      expiresIn: refreshTokenExpiresIn
+    });
 
     return { 
       status: 200, 
       body: { 
         token,
+        refreshToken: refreshToken.id,
         user: {
           id: authUser.id,
           name: authUser.name,
