@@ -1,3 +1,4 @@
+import { ca } from "zod/locales";
 import { prismaService, PrismaClient} from "../../service/prisma.ts";
 
 
@@ -24,10 +25,12 @@ class RefreshTokenRepository {
     return this.prisma.refreshToken.findFirst({ where: { id } });
   }
 
+  //Deleta um token específico, logout em um único disposítivo.
   async delete(id: string) {
     await this.prisma.refreshToken.delete({ where: { id } });
   }
-  
+
+  // Deleta todos os tokens (Logout Geral / Troca de Senha)
   async deleteByUserId(userId: string) {
     await this.prisma.refreshToken.deleteMany({ where: { userId } });
   }

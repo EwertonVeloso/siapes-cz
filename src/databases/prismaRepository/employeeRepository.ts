@@ -10,6 +10,8 @@ class EmployeeRepository {
     constructor(prismaService: PrismaClient) {
         this.prisma = prismaService
     }
+
+    
   
   async findByEmail(email: string) : Promise<Employee | null>{
     const employee = await this.prisma.employee.findUnique({
@@ -85,12 +87,16 @@ class EmployeeRepository {
   }
 
   async updatePassword(id: string, passwordHash: string): Promise<void> {
-    await this.prisma.employee.update({
-      where: { id },
-      data: {
-        password: passwordHash,  
-      },
-    });
+   await this.prisma.$transaction([
+      this.prisma.employee.update({
+        where: { id },
+        data: { password: passwordHash },
+      }),
+
+      this.prisma.refreshToken.deleteMany({
+        where: { userId: id },
+      })
+    ]);
   }
 
   async updateStatus(id: string, isActive: boolean): Promise<void> {
