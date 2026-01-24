@@ -52,6 +52,12 @@ class CoordinatorRepository {
     });
   }
 
+  async findByIdWithPassword(id: string) {
+    return this.prisma.coordinator.findUnique({
+      where: { id },
+    });
+  }
+
   async create(
     data: CreateCoordinatorDTO
   ): Promise<Coordinator> {
@@ -83,6 +89,22 @@ class CoordinatorRepository {
       });
 
     return updatedCoordinator;
+  }
+
+  async updatePassword(
+    id: string,
+    passwordHash: string
+  ): Promise<void> {
+    await this.prisma.$transaction([
+      this.prisma.coordinator.update({
+        where: { id },
+        data: { password: passwordHash },
+      }),
+
+      this.prisma.refreshToken.deleteMany({
+        where: { userId: id },
+      })
+    ]);
   }
 
   async delete(id: string): Promise<void> {

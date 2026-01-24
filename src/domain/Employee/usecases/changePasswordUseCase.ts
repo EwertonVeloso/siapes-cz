@@ -1,6 +1,8 @@
 import { compare, hash } from "bcryptjs";
-import { AppError } from "../../../errors/appErrors.ts"
+import { AppError } from "../../../errors/appErrors.ts";
+
 import employeeRepository from "../../../databases/prismaRepository/employeeRepository.ts";
+import coordinatorRepository from "../../../databases/prismaRepository/coordinatorRepository.ts"; 
 
 interface IChangePasswordRequest {
   userId: string;
@@ -11,25 +13,43 @@ interface IChangePasswordRequest {
 class ChangePasswordUseCase {
   async execute({ userId, oldPassword, newPassword }: IChangePasswordRequest) {
     
-    const employee = await employeeRepository.findByIdWithPassword(userId);
+    let user = null;
+    let isEmployee = false;
 
-    if (!employee) {
+    const employee = await employeeRepository.findByIdWithPassword(userId);
+    if (employee) {
+      user = employee;
+      isEmployee = true;
+    } else {
+      const coordinator = await coordinatorRepository.findByIdWithPassword(userId);
+      if (coordinator) {
+        user = coordinator;
+        isEmployee = false;
+      }
+    }
+
+    if (!user) {
       throw new AppError("Usuário não encontrado.", 404);
     }
 
-    const passwordMatch = await compare(oldPassword, employee.password);
+    const passwordMatch = await compare(oldPassword, user.password);
 
     if (!passwordMatch) {
-      throw new AppError("Senha incorreta.", 401);
+      throw new AppError("Senha antiga incorreta.", 401);
     }
 
-    if (await compare(newPassword, employee.password)) {
+    const isSamePassword = await compare(newPassword, user.password);
+    if (isSamePassword) {
       throw new AppError("A nova senha deve ser diferente da atual.", 400);
     }
 
     const hashedPassword = await hash(newPassword, 8);
 
-    await employeeRepository.updatePassword(userId, hashedPassword);
+    if (isEmployee) {
+      await employeeRepository.updatePassword(userId, hashedPassword);
+    } else {
+      await coordinatorRepository.updatePassword(userId, hashedPassword);
+    }
 
     return { message: "Senha alterada com sucesso." };
   }
