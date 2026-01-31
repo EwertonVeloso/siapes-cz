@@ -31,7 +31,6 @@ model Employee {
 enum EmployeeRole {
   ADMIN
   MANAGER
-  PRECEPTOR
 }
 
 model Coordinator {
@@ -50,13 +49,13 @@ model Coordinator {
 model Request {
   id                String       @id @default(uuid())
   protocol          String       @unique
-  hash_protocol     String?
   title             String
   description       String
   status            RequestStatus @default(PENDING)
   course            String
   students_number   Int
   createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
   archives          Archive[]
 
   @@map("requests")

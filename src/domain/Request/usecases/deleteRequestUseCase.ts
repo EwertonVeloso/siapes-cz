@@ -9,6 +9,10 @@ class deleteRequestUseCase {
       throw new AppError("Solicitação não encontrada.", 404);
     }
 
+    if (requestExists.status === "ACCEPTED") {
+      throw new AppError("Não é possível deletar uma solicitação deferida.", 400);  
+    }
+
     await requestRepository.delete(id);
 
     return {

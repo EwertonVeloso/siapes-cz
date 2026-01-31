@@ -8,11 +8,9 @@ import multer from 'multer';
 import { multerConfig } from '../config/multer.ts';
 import UploadArchiveController from '../controllers/Request/uploadArchiveController.ts';
 import UpdateStatusRequestController from '../controllers/Request/updateStatusRequestController.ts';
-import { verifyToken } from '../middlewares/verifyToken.ts';
 
 const requestRoutes = Router();
 const upload = multer(multerConfig);
-requestRoutes.use(verifyToken); 
 
 requestRoutes.post('/', RegisterRequestController.handle);
 requestRoutes.get('/', GetAllRequestController.handle);

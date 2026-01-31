@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const ROLES = ["ADMIN", "MANAGER", "PRECEPTOR"] as const;
+const ROLES = ["ADMIN", "MANAGER"] as const;
 
 export const CreateEmployeeSchema = z.object({
     professional_registration: z
@@ -18,7 +18,7 @@ export const CreateEmployeeSchema = z.object({
 
     role: z
     .enum(ROLES)
-    .default("PRECEPTOR"),
+    .default("MANAGER"),
 
     password: z.coerce
     .string("Senha é obrigatória" )

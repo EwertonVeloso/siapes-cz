@@ -6,11 +6,9 @@ import DeleteEmployeeController  from "../controllers/Employee/deleteEmployeeCon
 import GetEmployeeByIdController from "../controllers/Employee/getEmployeeByIdController.ts";
 import UpdateEmployeeStatusController from "../controllers/Employee/updateEmployeeStatusController.ts";
 import RoleEmployeeController from "../controllers/Employee/updateEmployeeRoleController.ts";
-import { verifyToken } from "../middlewares/verifyToken.ts";
 
 
 const employeeRoutes = express.Router();
-employeeRoutes.use(verifyToken)
 
 employeeRoutes.post("/", RegisterEmployeeController.handle);
 employeeRoutes.put("/:id", UpdateEmployeeController.handle);

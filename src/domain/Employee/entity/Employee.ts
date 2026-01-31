@@ -1,4 +1,4 @@
-export type EmployeeRole = 'ADMIN' | 'MANAGER' | 'PRECEPTOR';
+export type EmployeeRole = 'ADMIN' | 'MANAGER';
 //import { EmployeeRole } from '@prisma/client';
 
 export type Employee = {

@@ -12,7 +12,7 @@ interface IRequest {
 class UpdateEmployeeRoleUseCase {
   async execute({ targetId, newRole, adminId }: IRequest) {
 
-    const validRoles = ["ADMIN", "MANAGER", "PRECEPTOR"];
+    const validRoles = ["ADMIN", "MANAGER"];
 
     const roleNormalized = newRole.toUpperCase();
 

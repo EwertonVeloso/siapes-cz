@@ -5,6 +5,7 @@ export const createRequestSchema = z.object({
   description: z.string( "A descrição é obrigatória" ),
   course: z.string("O curso é obrigatório"),
   students_number: z.number("Informe o número de alunos" ).int().positive(),
+  protocol: z.string().min(5, "Protocolo inválido"),
 });
 
 export const updateRequestSchema = createRequestSchema

@@ -25,6 +25,13 @@ class RequestRepository {
     });
   }
 
+  async findByProtocol(protocol: string) {
+    return await prisma.request.findUnique({
+      where: { protocol },
+      include: { archives: true }
+    });
+  }
+
   async create(data: CreateRequestDTO) {
     return await prisma.request.create({
       data: data as any,
