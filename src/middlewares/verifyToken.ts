@@ -1,12 +1,13 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import BlacklistService from "../service/blackListService.ts";
 
 interface ITokenPayload {
   sub: string;
   role: string;
 }
 
-export function verifyToken(req: Request, res: Response, next: NextFunction) {
+export async function verifyToken(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -29,6 +30,13 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
   }
 
   try {
+    const isBlacklisted = await BlacklistService.hasToken(token);
+
+    if (isBlacklisted) {
+      res.status(401).json({ message: "Sessão inválida ou finalizada." });
+      return;
+    }
+
     const decoded = jwt.verify(token, process.env.TOKEN_KEY!) as unknown as ITokenPayload;
 
     req.user = {

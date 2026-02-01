@@ -1,10 +1,16 @@
 import refreshTokenRepository from "../../../databases/prismaRepository/refreshTokenRepository.ts";
+import BlacklistService from "../../../service/blackListService.ts"
 
 class LogoutUseCase {
-  async execute(refresh_token: string) {
-    await refreshTokenRepository.delete(refresh_token);
+  async execute(accessToken: string, refreshToken?: string) {
     
-    return;
+    if (accessToken) {
+        await BlacklistService.addToken(accessToken);
+    }
+
+    if (refreshToken) {
+        await refreshTokenRepository.delete(refreshToken); 
+    }
   }
 }
 
