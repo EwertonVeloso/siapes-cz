@@ -68,6 +68,7 @@ class CoordinatorRepository {
         password: data.password,
         registration: data.registration,
         role: data.role,
+        institutionId: data.institutionId,
       },
     });
 

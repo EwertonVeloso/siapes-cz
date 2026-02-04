@@ -8,6 +8,7 @@ export type Coordinator = {
     name: string;
     email: string;
     password: string;
+    institutionId: string;
     created_at: Date
     updated_at: Date
 }

@@ -40,9 +40,10 @@ model Coordinator {
   name                      String
   email                     String @unique
   password                  String
+  institutionId             String
   created_at                DateTime @default(now())
   updated_at                DateTime @updatedAt
-
+  
   @@map("coordinators")
 }
 

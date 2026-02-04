@@ -24,6 +24,9 @@ export const CreateCoordinatorSchema = z.object({
     .string("Senha é obrigatória")
     .min(6, "Senha deve ter pelo menos 6 caracteres"),
     
+  institutionId: z
+    .string("A instituição é obrigatória" )
+    .min(1, "Selecione uma instituição válida"),
 });
 
 export type CreateCoordinatorDTO = z.infer<typeof CreateCoordinatorSchema>;
