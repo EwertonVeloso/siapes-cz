@@ -40,6 +40,8 @@ JWT para autenticação
 
 Multer (upload de arquivos)
 
+obs: link para a api de instituições parceiras, que faz parte desse projeto: https://github.com/Bancos-de-Dados-II/projeto-1-projeto-01
+
 ## 1. Autenticação e Segurança
 
 A maioria dos endpoints desta API é protegida. Para acessá-los, é necessário enviar um **Token JWT** válido no cabeçalho da requisição.
