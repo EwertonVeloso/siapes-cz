@@ -9,10 +9,12 @@ import coordinatorRoutes from './routes/coordinatorRoutes.ts';
 import { ensureAccessControl } from './middlewares/ensureAccessControl.ts';
 import { verifyToken } from './middlewares/verifyToken.ts';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config();
 
 const server = express();
+server.use(cors());
 const PORT = process.env.PORT || 3000;
 
 server.use(express.json());
