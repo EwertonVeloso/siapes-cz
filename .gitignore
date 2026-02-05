@@ -4,3 +4,4 @@ node_modules
 docker-compose.override.yml
 /src/uploads/*
 npm-debug.log*
+/src/generated/uploads

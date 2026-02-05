@@ -17,6 +17,8 @@ const PORT = process.env.PORT || 3000;
 
 server.use(express.json());
 
+server.use('/files', express.static(path.resolve('src','uploads')));
+
 server.use('/auth', authRoutes);
 server.use('/profile', profileRoutes);
 
@@ -27,7 +29,6 @@ server.use('/coordinator', coordinatorRoutes);
 server.use('/employee', employeeRoutes);
 server.use('/request', requestRoutes);
 
-server.use('/files', express.static(path.resolve('src','uploads')));
 
 server.use(globalErrorHandler);
 
