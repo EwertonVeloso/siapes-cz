@@ -26,7 +26,7 @@
 - **Express** - Framework web
 - **Prisma ORM** - Mapeamento objeto-relacional
 - **PostgreSQL** - Banco de dados principal
-- **Redis** - Cache e sessões
+- **Redis** - blacklist cache
 - **Neo4j** - Banco de dados grafo
 - **Zod** - Validação de schemas
 - **JWT** - Autenticação segura
