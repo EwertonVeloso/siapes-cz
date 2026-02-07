@@ -31,7 +31,7 @@
 - **Zod** - Validação de schemas
 - **JWT** - Autenticação segura
 - **Multer** - Upload de arquivos
-
+  
 ## Autenticação e Segurança
 
 A maioria dos endpoints desta API é protegida. Para acessá-los, é necessário enviar um **Token JWT** válido no cabeçalho da requisição.
@@ -335,6 +335,7 @@ Atualiza dados básicos (nome, email).
 ## Coordenadores (`/coordinator`)
 
 Gerenciamento de coordenadores das Instituições de Ensino (IES) parceiras.
+Projeto de banco de dados II (instituições parceiras): https://github.com/Bancos-de-Dados-II/projeto-1-projeto-01
 
 ### Listar Coordenadores
 
